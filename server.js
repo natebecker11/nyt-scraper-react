@@ -27,8 +27,6 @@ app.post('/api/search/', (req, res) => {
   const queryURL = `${nytSearchUrl}&q=${term}&begin_date=${begin}&end_date=${end}`
   axios.get(queryURL)
     .then(({ data }) => {
-
-      // console.log(data.response.docs)
       const formatted = data.response.docs.map(doc => {
         return {
           title: doc.headline.main,
@@ -39,11 +37,18 @@ app.post('/api/search/', (req, res) => {
         }
       })
       res.json(formatted)
-      // res.json(results)
     })
     .catch(x => console.log(x))
 })
 
+
+// route to save an article to the database
+app.post('/api/save/', (req, res) => {
+  dbArticle.create(req.body)
+    .then(saved => {
+      res.json(saved)
+    })
+})
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT);
