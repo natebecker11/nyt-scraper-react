@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import axios from 'axios'
+import ArticleItem from './components/ArticleItem'
 
 class App extends Component {
 
@@ -8,6 +9,8 @@ class App extends Component {
     term: '',
     begin: '',
     end: '',
+    articles: [],
+    loading: false,
   }
 
   handleInputChange = event => {
@@ -19,9 +22,15 @@ class App extends Component {
   };
 
   handleFormSubmit = event => {
-    console.log('heard')
+    console.log('sending...')
+    this.setState({ loading: true })
     axios.post('/api/search/', this.state)
-      .then(x => console.log(x))
+      .then(({ data }) => {
+        console.log('recd')
+        console.log(data)
+        this.setState({ articles: data, loading: false })
+      })
+      .catch(x => console.log(x))
   }
 
   render() {
@@ -46,7 +55,12 @@ class App extends Component {
             <button type='button' onClick={this.handleFormSubmit}> Submit </button>
           </form>
         </section>
-        <section className='results-area'>
+        <section className='loading-area' style={this.state.loading ? {} : {display: 'none'}}>
+          <img alt='Loading' src={ require('./loading.gif') }/>
+        </section>
+        <section className='results-area' style={this.state.articles.length > 0 ? {} : {display: 'none'}}>
+          <h2>Results</h2>
+          {this.state.articles.map(article => <ArticleItem key={article.link} {...article} />)}
         </section>
         <section className='saved-area'>
         </section>

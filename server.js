@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(express.urlencoded({
     extended: true
 }));
-app.use(express.static('./dist'))
+// app.use(express.static('./dist'))
 
 
 const databaseUrl = process.env.MONGODB_URI || 'mongodb://localhost/nyt-scraper-react'
@@ -30,7 +30,7 @@ app.post('/api/search/', (req, res) => {
       const formatted = data.response.docs.map(doc => {
         return {
           title: doc.headline.main,
-          author: doc.byline.original.slice(3),
+          author: doc.byline.original ? doc.byline.original.slice(3) : 'Anonymous',
           description: doc.snippet,
           link: doc.web_url,
           publishedDate: doc.pub_date.slice(0, 10),
@@ -50,9 +50,15 @@ app.post('/api/save/', (req, res) => {
     })
 })
 
-
-app.get('*', (req, res) => {
-  
+app.post('/api/test/', (req, res) => {
+  console.log('test received')
+  res.send('test success')
 })
+
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "./build/index.html"));
+});
+
 const PORT = process.env.PORT || 8080;
 app.listen(PORT);
