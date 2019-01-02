@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(express.urlencoded({
     extended: true
 }));
-// app.use(express.static('./dist'))
+app.use(express.static(path.join(__dirname, '/client/build')))
 
 
 // const databaseUrl = process.env.MONGODB_URI || 'mongodb://localhost/nyt-scraper-react'
