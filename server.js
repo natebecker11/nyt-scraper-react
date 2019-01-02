@@ -14,8 +14,8 @@ app.use(express.urlencoded({
 // app.use(express.static('./dist'))
 
 
-const databaseUrl = process.env.MONGODB_URI || 'mongodb://localhost/nyt-scraper-react'
-mongoose.connect(databaseUrl, { useNewUrlParser: true })
+// const databaseUrl = process.env.MONGODB_URI || 'mongodb://localhost/nyt-scraper-react'
+// mongoose.connect(databaseUrl, { useNewUrlParser: true })
 
 const nytSearchUrl = `https://api.nytimes.com/svc/search/v2/articlesearch.json?apikey=${process.env.NYT_API_KEY}`
 
@@ -43,17 +43,17 @@ app.post('/api/search/', (req, res) => {
 
 
 // route to save an article to the database
-app.post('/api/save/', (req, res) => {
-  dbArticle.create(req.body)
-    .then(saved => {
-      res.json(saved)
-    })
-})
+// app.post('/api/save/', (req, res) => {
+//   dbArticle.create(req.body)
+//     .then(saved => {
+//       res.json(saved)
+//     })
+// })
 
-app.post('/api/test/', (req, res) => {
-  console.log('test received')
-  res.send('test success')
-})
+// app.post('/api/test/', (req, res) => {
+//   console.log('test received')
+//   res.send('test success')
+// })
 
 
 app.get("*", (req, res) => {
